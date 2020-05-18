@@ -15,7 +15,10 @@ const App = () => {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => {
+      blogs.sort((a, b) => b.likes - a.likes);
+      setBlogs(blogs);
+    });
   }, []);
 
   useEffect(() => {
@@ -123,9 +126,10 @@ const App = () => {
   const handleLikeBlog = async (id, updatedObj) => {
     try {
       const updatedBlog = await blogService.update(id, updatedObj);
-      const newBlogs = await blogs.map((blog) =>
-        blog.id === updatedBlog.id ? updatedBlog : blog
-      );
+      const newBlogs = await blogs
+        .map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+        .sort((a, b) => b.likes - a.likes);
+
       setBlogs(newBlogs);
     } catch (exception) {
       console.log("blog update unsuccessful");
