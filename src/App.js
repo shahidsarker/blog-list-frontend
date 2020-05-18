@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import Notification from "./components/Notification";
+import Toggleable from "./components/Toggleable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import "./App.css";
@@ -116,7 +117,7 @@ const App = () => {
   };
 
   const blogForm = () => (
-    <div>
+    <Toggleable buttonLabel="new blog">
       <h3>Create new</h3>
       <form onSubmit={handleCreateBlog}>
         <div>
@@ -148,7 +149,7 @@ const App = () => {
         </div>
         <button type="submit">create</button>
       </form>
-    </div>
+    </Toggleable>
   );
 
   const blogList = () => (
