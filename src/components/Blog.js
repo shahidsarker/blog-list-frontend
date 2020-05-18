@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -8,7 +8,7 @@ const Blog = ({ blog, updateBlog }) => {
     marginBottom: 5,
   };
 
-  const [expanded, setExpanded] = useState(Math.random() < 0.5);
+  const [expanded, setExpanded] = useState(false);
 
   const handleToggle = (e) => {
     e.preventDefault();
@@ -18,6 +18,13 @@ const Blog = ({ blog, updateBlog }) => {
   const handleLike = (e) => {
     e.preventDefault();
     updateBlog(blog.id, { likes: blog.likes + 1 });
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
+      deleteBlog(blog.id);
+    }
   };
 
   const details = () => {
@@ -30,6 +37,7 @@ const Blog = ({ blog, updateBlog }) => {
             <button onClick={handleLike}>like</button>
           </div>
           {blog.user && <div>{blog.user.name}</div>}
+          <button onClick={handleDelete}>remove</button>
         </>
       );
     }

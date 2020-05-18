@@ -136,6 +136,16 @@ const App = () => {
     }
   };
 
+  const handleDeleteBlog = async (id) => {
+    try {
+      await blogService.remove(id);
+      const updatedBlogs = blogs.filter((b) => b.id !== id);
+      setBlogs(updatedBlogs);
+    } catch (exception) {
+      console.log("error deleting");
+    }
+  };
+
   const blogList = () => (
     <>
       <p>
@@ -145,7 +155,12 @@ const App = () => {
       {blogForm()}
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlog={handleLikeBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          updateBlog={handleLikeBlog}
+          deleteBlog={handleDeleteBlog}
+        />
       ))}
     </>
   );
