@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,6 +15,11 @@ const Blog = ({ blog }) => {
     setExpanded(!expanded);
   };
 
+  const handleLike = (e) => {
+    e.preventDefault();
+    updateBlog(blog.id, { likes: blog.likes + 1 });
+  };
+
   const details = () => {
     if (expanded) {
       return (
@@ -22,7 +27,7 @@ const Blog = ({ blog }) => {
           <div>{blog.url}</div>
           <div>
             likes {blog.likes}
-            <button>like</button>
+            <button onClick={handleLike}>like</button>
           </div>
           {blog.user && <div>{blog.user.name}</div>}
         </>

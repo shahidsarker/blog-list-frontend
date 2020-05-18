@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "/api/blogs";
+const baseUrl = "/api/blogs/";
 
 let token = null;
 
@@ -19,4 +19,11 @@ const create = async (newObject) => {
   return response.data;
 };
 
-export default { getAll, create, setToken };
+const update = async (id, updatedObj) => {
+  const config = { headers: { Authorization: token } };
+
+  const response = await axios.put(baseUrl + id, updatedObj, config);
+  return response.data;
+};
+
+export default { getAll, create, update, setToken };
