@@ -1,31 +1,31 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
   const handleToggle = (e) => {
-    e.preventDefault();
-    setExpanded(!expanded);
-  };
+    e.preventDefault()
+    setExpanded(!expanded)
+  }
 
   const handleLike = (e) => {
-    e.preventDefault();
-    updateBlog(blog.id, { likes: blog.likes + 1 });
-  };
+    e.preventDefault()
+    updateBlog(blog.id, { likes: blog.likes + 1 })
+  }
 
   const handleDelete = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
-      deleteBlog(blog.id);
+      deleteBlog(blog.id)
     }
-  };
+  }
 
   const details = () => {
     if (expanded) {
@@ -39,19 +39,19 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
           {blog.user && <div>{blog.user.name}</div>}
           <button onClick={handleDelete}>remove</button>
         </>
-      );
+      )
     }
-  };
+  }
 
   return (
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author}
-        <button onClick={handleToggle}>{expanded ? "hide" : "view"}</button>
+        <button onClick={handleToggle}>{expanded ? 'hide' : 'view'}</button>
         {details()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
