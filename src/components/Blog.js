@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
-const Blog = ({ blog, updateBlog, deleteBlog }) => {
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
+import './Blog.css'
+import PropTypes from 'prop-types'
 
+const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const [expanded, setExpanded] = useState(false)
 
   const handleToggle = (e) => {
@@ -31,12 +26,12 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     if (expanded) {
       return (
         <>
-          <div>{blog.url}</div>
-          <div>
+          <div className="blog-url">{blog.url}</div>
+          <div className="blog-likes">
             likes {blog.likes}
             <button onClick={handleLike}>like</button>
           </div>
-          {blog.user && <div>{blog.user.name}</div>}
+          {blog.user && <div class="blog-user">{blog.user.name}</div>}
           <button onClick={handleDelete}>remove</button>
         </>
       )
@@ -44,14 +39,26 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div>
-        {blog.title} {blog.author}
+    <>
+      <div className="blog">
+        <span className="blog-title">{blog.title}</span>{' '}
+        <span className="blog-author">{blog.author}</span>
         <button onClick={handleToggle}>{expanded ? 'hide' : 'view'}</button>
         {details()}
       </div>
-    </div>
+    </>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+  }),
+  updateBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
 }
 
 export default Blog
