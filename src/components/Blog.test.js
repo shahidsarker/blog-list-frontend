@@ -55,3 +55,30 @@ test('blog url and likes shown when button is clicked', () => {
 
   expect(blogLikes).toHaveTextContent(String(blog.likes))
 })
+
+test('clicking like button calls event handler', () => {
+  const blog = {
+    title: 'Hello world',
+    author: 'John Doe',
+    url: 'http://example.com',
+    likes: 5,
+  }
+  const updateBlog = jest.fn()
+
+  const component = render(
+    <Blog
+      blog={blog}
+      updateBlog={updateBlog}
+      deleteBlog={() => console.log('delete blog')}
+    />
+  )
+
+  const blogToggle = component.container.querySelector('.blog-toggle')
+  fireEvent.click(blogToggle)
+
+  const blogLikeButton = component.container.querySelector('.blog-like-button')
+  fireEvent.click(blogLikeButton)
+  fireEvent.click(blogLikeButton)
+
+  expect(updateBlog.mock.calls).toHaveLength(2)
+})
