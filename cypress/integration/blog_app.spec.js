@@ -43,18 +43,6 @@ describe('Blog app', function () {
   describe('when logged in', function () {
     beforeEach(function () {
       cy.login({ username: 'mluukkai', password: 'salainen' })
-      // const secondUser = {
-      //   name: 'John Smith',
-      //   username: 'jsmith',
-      //   password: 'helloworld',
-      // }
-      // cy.request('POST', 'http://localhost:3001/api/users/', secondUser)
-      // cy.createBlog({
-      //   title: 'test',
-      //   author: 'Tiesto',
-      //   url: 'http://test.com/',
-      //   likes: 2,
-      // })
     })
 
     it('A blog can be created', function () {
@@ -66,13 +54,9 @@ describe('Blog app', function () {
 
       cy.get('#blog-list').contains('My testing blog')
       cy.get('#blog-list').contains('George Washington')
-      // cy.contains('blog author').parent().find('#blog-toggle').as('theButton')
-      // cy.get('@theButton').click()
-      // cy.contains('http://example.com/')
-      // cy.contains('likes 0')
     })
 
-    it.only('A user can like a blog', function () {
+    it('A user can like a blog', function () {
       cy.createBlog({
         title: 'Likeable Blog',
         author: 'Tiesto',
@@ -89,13 +73,26 @@ describe('Blog app', function () {
       cy.contains('likes 3')
     })
 
-    // describe('Deleting a blog', function () {
-    //   it('user who created can', function () {
-    //     cy.contains('gotta fix this')
-    //   })
-    //   it('user who did not create cannot', function () {
-    //     cy.contains('gotta fix this')
-    //   })
-    // })
+    describe('Deleting a blog', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Of Mice and Men',
+          author: 'John Steinbeck',
+          url: 'http://example.com',
+        })
+      })
+      it.only('user who created can', function () {
+        cy.contains('Of Mice and Men')
+          .parent()
+          .find('.blog-toggle')
+          .as('toggleButton')
+        cy.get('@toggleButton').click()
+        cy.get('.remove-blog-button').click()
+        cy.get('html').should('not.contain', 'Of Mice and Men')
+      })
+      // it('user who did not create cannot', function () {
+      //   cy.contains('gotta fix this')
+      // })
+    })
   })
 })
