@@ -43,25 +43,51 @@ describe('Blog app', function () {
   describe('when logged in', function () {
     beforeEach(function () {
       cy.login({ username: 'mluukkai', password: 'salainen' })
+      // const secondUser = {
+      //   name: 'John Smith',
+      //   username: 'jsmith',
+      //   password: 'helloworld',
+      // }
+      // cy.request('POST', 'http://localhost:3001/api/users/', secondUser)
+      // cy.createBlog({
+      //   title: 'test',
+      //   author: 'Tiesto',
+      //   url: 'http://test.com/',
+      //   likes: 2,
+      // })
     })
 
-    it.only('A blog can be created', function () {
+    it('A blog can be created', function () {
       cy.contains('new blog').click()
-      cy.get('#title').type('a new blog')
-      cy.get('#author').type('blog author')
+      cy.get('#title').type('My testing blog')
+      cy.get('#author').type('George Washington')
       cy.get('#url').type('http://example.com/')
       cy.get('#create-button').click()
 
-      cy.contains('a new blog')
-      cy.contains('blog author')
-      cy.contains('view').click()
-      cy.contains('http://example.com/')
-      cy.contains('likes 0')
+      cy.get('#blog-list').contains('My testing blog')
+      cy.get('#blog-list').contains('George Washington')
+      // cy.contains('blog author').parent().find('#blog-toggle').as('theButton')
+      // cy.get('@theButton').click()
+      // cy.contains('http://example.com/')
+      // cy.contains('likes 0')
     })
 
-    // it('A user can like a blog', function () {
-    //   cy.contains('gotta fix this')
-    // })
+    it.only('A user can like a blog', function () {
+      cy.createBlog({
+        title: 'Likeable Blog',
+        author: 'Tiesto',
+        url: 'http://test.com/',
+        likes: 2,
+      })
+      cy.contains('Likeable Blog')
+        .parent()
+        .find('.blog-toggle')
+        .as('toggleButton')
+      cy.get('@toggleButton').click()
+      cy.contains('likes 2')
+      cy.get('.blog-like-button').click()
+      cy.contains('likes 3')
+    })
 
     // describe('Deleting a blog', function () {
     //   it('user who created can', function () {
