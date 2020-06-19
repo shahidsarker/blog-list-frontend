@@ -5,7 +5,10 @@ describe('Blog app', function () {
   })
 
   it('Login form is shown', function () {
-    cy.contains('gotta fix this')
+    cy.contains('Log in to application')
+    cy.get('#username')
+    cy.get('#password')
+    cy.get('#login-button').contains('login')
   })
 
   describe('Login', function () {
@@ -18,7 +21,7 @@ describe('Blog app', function () {
     })
   })
 
-  describe.only('when logged in', function () {
+  describe('when logged in', function () {
     beforeEach(function () {
       cy.contains('gotta fix this')
     })
