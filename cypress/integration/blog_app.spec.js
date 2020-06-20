@@ -81,7 +81,7 @@ describe('Blog app', function () {
           url: 'http://example.com',
         })
       })
-      it.only('user who created can', function () {
+      it('user who created can', function () {
         cy.contains('Of Mice and Men')
           .parent()
           .find('.blog-toggle')
@@ -93,6 +93,35 @@ describe('Blog app', function () {
       // it('user who did not create cannot', function () {
       //   cy.contains('gotta fix this')
       // })
+    })
+
+    it('blogs ordered by likes', function () {
+      cy.createBlog({
+        title: 'No likes',
+        author: 'No author',
+        url: 'http://example.com/',
+        likes: 0,
+      })
+      cy.createBlog({
+        title: 'Some likes',
+        author: 'Some author',
+        url: 'http://example.com/',
+        likes: 3,
+      })
+      cy.createBlog({
+        title: 'Many likes',
+        author: 'Many author',
+        url: 'http://example.com/',
+        likes: 10,
+      })
+      cy.contains('view').click()
+      cy.contains('view').click()
+      cy.contains('view').click()
+      cy.get('.blog-likes').then((likes) => {
+        cy.wrap(likes[0]).contains('likes 10')
+        cy.wrap(likes[1]).contains('likes 3')
+        cy.wrap(likes[2]).contains('likes 0')
+      })
     })
   })
 })
