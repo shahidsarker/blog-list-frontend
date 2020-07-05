@@ -6,13 +6,15 @@ import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
-import { useDispatch, connect } from 'react-redux'
-import { initializeBlogs } from './reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs, createBlog } from './reducers/blogReducer'
 
-const App = (props) => {
+const App = () => {
   const dispatch = useDispatch()
+  const blogs = useSelector((state) => state.blogs)
 
-  const [blogs, setBlogs] = useState([])
+  const setBlogs = (args) => console.log(...args)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -101,12 +103,11 @@ const App = (props) => {
   const handleCreateBlog = async (blogObject) => {
     try {
       blogFormRef.current.toggleVisibility()
-      const newBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(newBlog))
+      dispatch(createBlog(blogObject))
 
       setMessage({
         type: 'success',
-        text: `new blog ${newBlog.title} by ${newBlog.author} added`,
+        text: `new blog ${blogObject.title} by ${blogObject.author} added`,
       })
       setTimeout(() => {
         setMessage('')
@@ -159,7 +160,7 @@ const App = (props) => {
 
       {blogForm()}
       <div id="blog-list">
-        {props.blogs.map((blog) => (
+        {blogs.map((blog) => (
           <Blog
             key={blog.id}
             blog={blog}
@@ -180,9 +181,4 @@ const App = (props) => {
   )
 }
 
-const mapState = (state) => {
-  console.log(state)
-  return { blogs: state.blogs }
-}
-
-export default connect(mapState)(App)
+export default App
