@@ -3,6 +3,7 @@ import blogService from '../services/blogs'
 export const NEW_BLOG = 'NEW_BLOG'
 export const INIT_BLOGS = 'INIT_BLOGS'
 export const LIKE_BLOG = 'LIKE_BLOG'
+export const REMOVE_BLOG = 'REMOVE_BLOG'
 
 const blogReducer = (state = [], action) => {
   switch (action.type) {
@@ -10,12 +11,14 @@ const blogReducer = (state = [], action) => {
       return [...state, action.data]
     case INIT_BLOGS:
       return action.data
-    case LIKE_BLOG: {
-      const id = action.data.id
+    case LIKE_BLOG:
       return state
-        .map((b) => (b.id !== id ? b : { ...b, likes: b.likes + 1 }))
+        .map((b) =>
+          b.id !== action.data.id ? b : { ...b, likes: b.likes + 1 }
+        )
         .sort((a, b) => b.likes - a.likes)
-    }
+    case REMOVE_BLOG:
+      return state.filter((b) => b.id !== action.data.id)
     default:
       return state
   }
@@ -48,6 +51,13 @@ export const likeBlog = (id, updatedObj) => {
       type: LIKE_BLOG,
       data: { id },
     })
+  }
+}
+
+export const removeBlog = (id) => {
+  return async (dispatch) => {
+    await blogService.remove(id)
+    dispatch({ type: REMOVE_BLOG, data: { id } })
   }
 }
 
