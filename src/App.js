@@ -13,15 +13,15 @@ import {
   likeBlog,
   removeBlog,
 } from './reducers/blogReducer'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blogs)
-
+  const notification = useSelector((state) => state.notification)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -47,15 +47,11 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-      setMessage({ type: 'success', text: `Welcome ${user.name}` })
-      setTimeout(() => {
-        setMessage('')
-      }, 5000)
+      dispatch(
+        setNotification({ type: 'success', text: `Welcome ${user.name}` })
+      )
     } catch (exception) {
-      setMessage({ type: 'error', text: 'wrong credentials' })
-      setTimeout(() => {
-        setMessage('')
-      }, 5000)
+      dispatch(setNotification({ type: 'error', text: 'wrong credentials' }))
       console.log('Wrong credentials')
     }
   }
@@ -66,10 +62,7 @@ const App = () => {
     blogService.setToken(null)
     setUser(null)
 
-    setMessage({ type: 'success', text: 'logged out' })
-    setTimeout(() => {
-      setMessage('')
-    }, 5000)
+    dispatch(setNotification({ type: 'success', text: 'logged out' }))
   }
 
   const loginForm = () => (
@@ -108,13 +101,12 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       dispatch(createBlog(blogObject))
 
-      setMessage({
-        type: 'success',
-        text: `new blog ${blogObject.title} by ${blogObject.author} added`,
-      })
-      setTimeout(() => {
-        setMessage('')
-      }, 5000)
+      dispatch(
+        setNotification({
+          type: 'success',
+          text: `new blog ${blogObject.title} by ${blogObject.author} added`,
+        })
+      )
     } catch (exception) {
       console.log('new blog unsuccessful')
     }
@@ -171,7 +163,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message} />
+      <Notification message={notification} />
       {user === null ? loginForm() : blogDisplay()}
     </div>
   )
