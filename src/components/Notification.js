@@ -9,6 +9,8 @@ const Notification = ({ message }) => {
   return <div className={message.type}>{message.text}</div>
 }
 
-Notification.propTypes = { message: PropTypes.string }
+Notification.propTypes = {
+  message: PropTypes.shape({ type: PropTypes.string, text: PropTypes.string }),
+}
 
 export default Notification
