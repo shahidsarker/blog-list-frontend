@@ -7,7 +7,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs, createBlog } from './reducers/blogReducer'
+import { initializeBlogs, createBlog, likeBlog } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -129,14 +129,15 @@ const App = () => {
     </Toggleable>
   )
 
-  const handleLikeBlog = async (id, updatedObj) => {
+  const handleLikeBlog = (id, updatedObj) => {
     try {
-      const updatedBlog = await blogService.update(id, updatedObj)
-      const newBlogs = await blogs
-        .map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
-        .sort((a, b) => b.likes - a.likes)
+      // const updatedBlog = await blogService.update(id, updatedObj)
+      // const newBlogs = await blogs
+      //   .map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+      //   .sort((a, b) => b.likes - a.likes)
 
-      setBlogs(newBlogs)
+      // setBlogs(newBlogs)
+      dispatch(likeBlog(id, updatedObj))
     } catch (exception) {
       console.log('blog update unsuccessful')
     }
