@@ -131,12 +131,6 @@ const App = () => {
 
   const handleLikeBlog = (id, updatedObj) => {
     try {
-      // const updatedBlog = await blogService.update(id, updatedObj)
-      // const newBlogs = await blogs
-      //   .map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
-      //   .sort((a, b) => b.likes - a.likes)
-
-      // setBlogs(newBlogs)
       dispatch(likeBlog(id, updatedObj))
     } catch (exception) {
       console.log('blog update unsuccessful')
