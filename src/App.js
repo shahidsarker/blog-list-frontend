@@ -3,8 +3,6 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Toggleable from './components/Toggleable'
 import BlogForm from './components/BlogForm'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -14,6 +12,7 @@ import {
   removeBlog,
 } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeUser, loginUser, logoutUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -21,35 +20,19 @@ const App = () => {
   const notification = useSelector((state) => state.notification)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const user = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUser())
   }, [dispatch])
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
 
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
-      const user = await loginService.login({ username, password })
-
-      window.localStorage.setItem('loggedBlogUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
+      dispatch(loginUser({ username, password }))
       setUsername('')
       setPassword('')
-
-      dispatch(
-        setNotification({ type: 'success', text: `Welcome ${user.name}` })
-      )
     } catch (exception) {
       dispatch(setNotification({ type: 'error', text: 'wrong credentials' }))
       console.log('Wrong credentials')
@@ -58,11 +41,7 @@ const App = () => {
 
   const handleLogout = async (e) => {
     e.preventDefault()
-    window.localStorage.removeItem('loggedBlogUser')
-    blogService.setToken(null)
-    setUser(null)
-
-    dispatch(setNotification({ type: 'success', text: 'logged out' }))
+    dispatch(logoutUser())
   }
 
   const loginForm = () => (
