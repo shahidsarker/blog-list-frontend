@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import Notification from './components/Notification'
+import Users from './components/Users'
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -34,6 +35,7 @@ const App = () => {
             {user.name} logged in <button onClick={handleLogout}>logout</button>
           </p>
           <BlogDisplay />
+          <Users />
         </>
       )}
     </div>
