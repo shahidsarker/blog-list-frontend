@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createBlog, likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const BlogDisplay = (props) => {
+const BlogDisplay = () => {
   const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blogs)
 
