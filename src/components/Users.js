@@ -21,12 +21,14 @@ const Users = () => {
             <th>blogs created</th>
           </tr>
         </thead>
-        {users.map((user) => (
-          <tr key={user.id}>
-            <td>{user.name}</td>
-            <td>{user.blogs.length}</td>
-          </tr>
-        ))}
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.blogs.length}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </>
   )
