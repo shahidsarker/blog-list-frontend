@@ -7,6 +7,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser, logoutUser } from './reducers/userReducer'
 import Login from './components/Login'
 import BlogDisplay from './components/BlogDisplay'
+import { Switch, Route, Link } from 'react-router-dom'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -25,7 +26,12 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <Link to="/">
+        <h2>blogs</h2>
+      </Link>
+      <Link to="/users">
+        <h2>Users</h2>
+      </Link>
       <Notification message={notification} />
       {user === null ? (
         <Login />
@@ -34,8 +40,12 @@ const App = () => {
           <p>
             {user.name} logged in <button onClick={handleLogout}>logout</button>
           </p>
-          <BlogDisplay />
-          <Users />
+          <Switch>
+            <Route path="/users" component={Users} />
+            <Route path="/">
+              <BlogDisplay />
+            </Route>
+          </Switch>
         </>
       )}
     </div>
