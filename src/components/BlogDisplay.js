@@ -1,7 +1,8 @@
 import React from 'react'
 import Toggleable from './Toggleable'
 import BlogForm from './BlogForm'
-import Blog from './Blog'
+// import Blog from './Blog'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { createBlog, likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
@@ -54,14 +55,13 @@ const BlogDisplay = () => {
     <>
       {blogForm()}
       <div id="blog-list">
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateBlog={handleLikeBlog}
-            deleteBlog={handleDeleteBlog}
-          />
-        ))}
+        <ul>
+          {blogs.map((blog) => (
+            <li key={blog.id}>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   )
