@@ -7,7 +7,8 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser, logoutUser } from './reducers/userReducer'
 import Login from './components/Login'
 import BlogDisplay from './components/BlogDisplay'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
+import User from './components/User'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -23,6 +24,8 @@ const App = () => {
     e.preventDefault()
     dispatch(logoutUser())
   }
+
+  // const matchUsers = useRouteMatch('/users/:id')
 
   return (
     <div>
@@ -41,6 +44,7 @@ const App = () => {
             {user.name} logged in <button onClick={handleLogout}>logout</button>
           </p>
           <Switch>
+            <Route path="/users/:id" component={User} />
             <Route path="/users" component={Users} />
             <Route path="/">
               <BlogDisplay />
