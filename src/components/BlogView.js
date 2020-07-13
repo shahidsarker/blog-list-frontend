@@ -1,39 +1,50 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { initializeBlogs, likeBlog } from '../reducers/blogReducer'
+import { initializeBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
 
-const BlogView = () => {
+const BlogView = ({ history }) => {
   const dispatch = useDispatch()
   const id = useParams().id
-  console.log(id)
   const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
   const blog = blogs.find((b) => b.id === id)
+  if (!blog) return null
 
-  const updateBlog = (id, updatedObj) => {
+  const handleLike = (e) => {
+    e.preventDefault()
     try {
-      dispatch(likeBlog(id, updatedObj))
-    } catch (exception) {
+      dispatch(likeBlog(blog.id, { likes: blog.likes + 1 }))
+    } catch (e) {
       console.log('blog update unsuccessful')
     }
   }
 
-  const handleLike = (e) => {
+  const handleDelete = (e) => {
     e.preventDefault()
-    updateBlog(blog.id, { likes: blog.likes + 1 })
+    if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
+      dispatch(removeBlog(blog.id))
+      history.push('/')
+    }
   }
 
-  if (!blog) return null
+  const removeButton = () =>
+    blog.user && user.username === blog.user.username ? (
+      <button className="remove-blog-button" onClick={handleDelete}>
+        remove
+      </button>
+    ) : null
+
   return (
     <>
       <div className="blog">
         <h3 className="blog-title">{blog.title}</h3>
-        <h6 className="blog-author">{blog.author}</h6>
+        <p className="blog-author">{blog.author}</p>
         <a href={blog.url} className="blog-url">
           {blog.url}
         </a>
@@ -46,12 +57,7 @@ const BlogView = () => {
         {blog.user && (
           <div className="blog-user">added by {blog.user.name}</div>
         )}
-        <button
-          className="remove-blog-button"
-          onClick={console.log('handleDelete')}
-        >
-          remove
-        </button>
+        {removeButton()}
       </div>
     </>
   )
