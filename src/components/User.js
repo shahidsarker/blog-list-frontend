@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { initializeUsers } from '../reducers/usersReducer'
+import BlogList from './BlogList'
 
 const User = ({ match }) => {
   const dispatch = useDispatch()
@@ -14,25 +15,11 @@ const User = ({ match }) => {
 
   if (!user) return null
 
-  const blogList = (
-    <>
-      <h4>added blogs</h4>
-      {user.blogs.length ? (
-        <ul>
-          {user.blogs.map((b) => (
-            <li key={b.id}>{b.title}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No blogs added</p>
-      )}
-    </>
-  )
-
   return (
     <>
       <h2>{user.name}</h2>
-      {blogList}
+      <h4>added blogs</h4>
+      {<BlogList blogs={user.blogs} />}
     </>
   )
 }

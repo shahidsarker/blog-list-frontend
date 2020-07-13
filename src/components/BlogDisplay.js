@@ -1,10 +1,11 @@
 import React from 'react'
 import Toggleable from './Toggleable'
 import BlogForm from './BlogForm'
-import Blog from './Blog'
+
 import { useDispatch, useSelector } from 'react-redux'
-import { createBlog, likeBlog, removeBlog } from '../reducers/blogReducer'
+import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import BlogList from './BlogList'
 
 const BlogDisplay = () => {
   const dispatch = useDispatch()
@@ -34,35 +35,10 @@ const BlogDisplay = () => {
     </Toggleable>
   )
 
-  const handleLikeBlog = (id, updatedObj) => {
-    try {
-      dispatch(likeBlog(id, updatedObj))
-    } catch (exception) {
-      console.log('blog update unsuccessful')
-    }
-  }
-
-  const handleDeleteBlog = async (id) => {
-    try {
-      dispatch(removeBlog(id))
-    } catch (exception) {
-      console.log('error deleting')
-    }
-  }
-
   return (
     <>
       {blogForm()}
-      <div id="blog-list">
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateBlog={handleLikeBlog}
-            deleteBlog={handleDeleteBlog}
-          />
-        ))}
-      </div>
+      <BlogList blogs={blogs} />
     </>
   )
 }

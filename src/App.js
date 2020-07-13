@@ -9,6 +9,7 @@ import Login from './components/Login'
 import BlogDisplay from './components/BlogDisplay'
 import { Switch, Route, Link } from 'react-router-dom'
 import User from './components/User'
+import Blog from './components/Blog'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -44,9 +45,8 @@ const App = () => {
           <Switch>
             <Route path="/users/:id" component={User} />
             <Route path="/users" component={Users} />
-            <Route path="/">
-              <BlogDisplay />
-            </Route>
+            <Route path="/blogs/:id" component={Blog} />
+            <Route path="/" component={BlogDisplay} />
           </Switch>
         </>
       )}
