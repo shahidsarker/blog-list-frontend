@@ -1,70 +1,67 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import './Blog.css'
-import PropTypes from 'prop-types'
+import { useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { initializeBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, updateBlog, deleteBlog }) => {
-  const [expanded, setExpanded] = useState(false)
+const Blog = ({ history }) => {
+  const dispatch = useDispatch()
+  const id = useParams().id
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
 
-  const handleToggle = (e) => {
-    e.preventDefault()
-    setExpanded(!expanded)
-  }
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
+
+  const blog = blogs.find((b) => b.id === id)
+  if (!blog) return null
 
   const handleLike = (e) => {
     e.preventDefault()
-    updateBlog(blog.id, { likes: blog.likes + 1 })
+    try {
+      dispatch(likeBlog(blog.id, { likes: blog.likes + 1 }))
+    } catch (e) {
+      console.log('blog update unsuccessful')
+    }
   }
 
   const handleDelete = (e) => {
     e.preventDefault()
     if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
-      deleteBlog(blog.id)
+      dispatch(removeBlog(blog.id))
+      history.push('/')
     }
   }
 
-  const details = () => {
-    if (expanded) {
-      return (
-        <>
-          <div className="blog-url">{blog.url}</div>
-          <div className="blog-likes">
-            likes {blog.likes}
-            <button onClick={handleLike} className="blog-like-button">
-              like
-            </button>
-          </div>
-          {blog.user && <div className="blog-user">{blog.user.name}</div>}
-          <button className="remove-blog-button" onClick={handleDelete}>
-            remove
-          </button>
-        </>
-      )
-    }
-  }
+  const removeButton = () =>
+    blog.user && user.username === blog.user.username ? (
+      <button className="remove-blog-button" onClick={handleDelete}>
+        remove
+      </button>
+    ) : null
 
   return (
     <>
       <div className="blog">
-        <span className="blog-title">{blog.title}</span>{' '}
-        <span className="blog-author">{blog.author}</span>
-        <button onClick={handleToggle} className="blog-toggle">
-          {expanded ? 'hide' : 'view'}
-        </button>
-        {details()}
+        <h3 className="blog-title">{blog.title}</h3>
+        <p className="blog-author">{blog.author}</p>
+        <a href={blog.url} className="blog-url">
+          {blog.url}
+        </a>
+        <div className="blog-likes">
+          likes {blog.likes}
+          <button onClick={handleLike} className="blog-like-button">
+            like
+          </button>
+        </div>
+        {blog.user && (
+          <div className="blog-user">added by {blog.user.name}</div>
+        )}
+        {removeButton()}
       </div>
     </>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-  }),
-  updateBlog: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
 }
 
 export default Blog
