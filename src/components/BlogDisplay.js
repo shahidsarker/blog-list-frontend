@@ -1,10 +1,11 @@
 import React from 'react'
 import Toggleable from './Toggleable'
 import BlogForm from './BlogForm'
-import { Link } from 'react-router-dom'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import BlogList from './BlogList'
 
 const BlogDisplay = () => {
   const dispatch = useDispatch()
@@ -37,15 +38,7 @@ const BlogDisplay = () => {
   return (
     <>
       {blogForm()}
-      <div id="blog-list">
-        <ul>
-          {blogs.map((blog) => (
-            <li key={blog.id}>
-              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <BlogList blogs={blogs} />
     </>
   )
 }
