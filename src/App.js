@@ -4,12 +4,13 @@ import Users from './components/Users'
 import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
-import { initializeUser, logoutUser } from './reducers/userReducer'
+import { initializeUser } from './reducers/userReducer'
 import Login from './components/Login'
 import BlogDisplay from './components/BlogDisplay'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import User from './components/User'
 import Blog from './components/Blog'
+import Navigation from './components/Navigation'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -21,27 +22,16 @@ const App = () => {
     dispatch(initializeUser())
   }, [dispatch])
 
-  const handleLogout = async (e) => {
-    e.preventDefault()
-    dispatch(logoutUser())
-  }
-
   return (
     <div>
-      <Link to="/">
-        <h2>blogs</h2>
-      </Link>
-      <Link to="/users">
-        <h2>Users</h2>
-      </Link>
+      <Navigation />
+
       <Notification message={notification} />
+      <h1>Blog App</h1>
       {user === null ? (
         <Login />
       ) : (
         <>
-          <p>
-            {user.name} logged in <button onClick={handleLogout}>logout</button>
-          </p>
           <Switch>
             <Route path="/users/:id" component={User} />
             <Route path="/users" component={Users} />
