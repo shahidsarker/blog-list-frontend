@@ -49,3 +49,22 @@ nav {
   background-color: #eee;
   padding: 0.5rem;
 }
+
+#blog-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#blog-list li {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 0.01rem solid;
+  border-radius: 2px;
+}
+
+#blog-list li:hover {
+  border-color: red;
+  font-weight: bold;
+  cursor: pointer;
+}
