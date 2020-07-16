@@ -11,6 +11,7 @@ import { Switch, Route } from 'react-router-dom'
 import User from './components/User'
 import Blog from './components/Blog'
 import Navigation from './components/Navigation'
+import { Container } from '@material-ui/core'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <div>
+    <Container>
       <Navigation />
 
       <Notification message={notification} />
@@ -40,7 +41,7 @@ const App = () => {
           </Switch>
         </>
       )}
-    </div>
+    </Container>
   )
 }
 
