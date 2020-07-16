@@ -2,7 +2,12 @@ import React, { useEffect } from 'react'
 import './Blog.css'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { initializeBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
+import {
+  initializeBlogs,
+  likeBlog,
+  removeBlog,
+  newComment,
+} from '../reducers/blogReducer'
 import Comments from './Comments'
 
 const Blog = ({ history }) => {
@@ -42,6 +47,14 @@ const Blog = ({ history }) => {
       </button>
     ) : null
 
+  const createComment = (comment) => {
+    try {
+      dispatch(newComment(blog.id, comment))
+    } catch (e) {
+      console.log('new comment unsuccessful')
+    }
+  }
+
   return (
     <>
       <div className="blog">
@@ -61,7 +74,7 @@ const Blog = ({ history }) => {
         )}
         {removeButton()}
 
-        <Comments comments={blog.comments} />
+        <Comments comments={blog.comments} createComment={createComment} />
       </div>
     </>
   )

@@ -4,6 +4,7 @@ export const NEW_BLOG = 'NEW_BLOG'
 export const INIT_BLOGS = 'INIT_BLOGS'
 export const LIKE_BLOG = 'LIKE_BLOG'
 export const REMOVE_BLOG = 'REMOVE_BLOG'
+export const NEW_COMMENT = 'NEW_COMMENT'
 
 const blogReducer = (state = [], action) => {
   switch (action.type) {
@@ -19,6 +20,12 @@ const blogReducer = (state = [], action) => {
         .sort((a, b) => b.likes - a.likes)
     case REMOVE_BLOG:
       return state.filter((b) => b.id !== action.data.id)
+    case NEW_COMMENT:
+      return state.map((b) =>
+        b.id !== action.data.id
+          ? b
+          : { ...b, comments: [...b.comments, action.data.comment] }
+      )
     default:
       return state
   }
@@ -58,6 +65,19 @@ export const removeBlog = (id) => {
   return async (dispatch) => {
     await blogService.remove(id)
     dispatch({ type: REMOVE_BLOG, data: { id } })
+  }
+}
+
+export const newComment = (id, comment) => {
+  return async (dispatch) => {
+    await blogService.comment(id, { comment })
+    dispatch({
+      type: NEW_COMMENT,
+      data: {
+        id,
+        comment,
+      },
+    })
   }
 }
 
