@@ -3,6 +3,7 @@ import './Blog.css'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { initializeBlogs, likeBlog, removeBlog } from '../reducers/blogReducer'
+import Comments from './Comments'
 
 const Blog = ({ history }) => {
   const dispatch = useDispatch()
@@ -59,6 +60,8 @@ const Blog = ({ history }) => {
           <div className="blog-user">added by {blog.user.name}</div>
         )}
         {removeButton()}
+
+        <Comments comments={blog.comments} />
       </div>
     </>
   )
