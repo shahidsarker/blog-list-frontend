@@ -29,6 +29,7 @@ const App = () => {
 
       <Notification message={notification} />
       <h1>Blog App</h1>
+
       {user === null ? (
         <Login />
       ) : (

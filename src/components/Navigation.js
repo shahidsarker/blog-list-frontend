@@ -14,9 +14,9 @@ const Navigation = () => {
   }
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="sticky">
       <Toolbar>
-        <Typography variant="h6">Blogs</Typography>
+        <Typography variant="h6">Blog App</Typography>
         <Button component={NavLink} to="/" exact color="inherit">
           blogs
         </Button>
