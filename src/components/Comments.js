@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Comments = ({ comments }) => {
+const Comments = ({ comments, createComment }) => {
+  const [comment, setComment] = useState()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    createComment(comment)
+    setComment('')
+  }
+
   return (
     <>
       <h4>Comments</h4>
-      <p>Comments form</p>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="comment"
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button type="submit">Submit</button>
+      </form>
       {comments.length ? (
         <ul>
           {comments.map((comment, idx) => (
