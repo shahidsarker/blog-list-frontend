@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
+import { TextField, Button } from '@material-ui/core'
+
 const Comments = ({ comments, createComment }) => {
   const [comment, setComment] = useState()
 
@@ -13,14 +15,17 @@ const Comments = ({ comments, createComment }) => {
   return (
     <>
       <h4>Comments</h4>
-      <form onSubmit={handleSubmit}>
-        <input
+      <form onSubmit={handleSubmit} className="comment-form">
+        <TextField
           type="text"
           name="comment"
           value={comment}
+          variant="outlined"
           onChange={({ target }) => setComment(target.value)}
         />
-        <button type="submit">Submit</button>
+        <Button variant="contained" type="submit">
+          Submit
+        </Button>
       </form>
       {comments.length ? (
         <ul>
